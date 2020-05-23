@@ -55,8 +55,6 @@ export class AuthService {
     return this.http.post(this.oauthTokenUrl, body, { headers, withCredentials: true })
      .toPromise()
      .then(response => {
-      console.log('login in authService: ' + response);
-      console.log('login in authService: ' + response['access_token']);
       this.armazenarToken(response['access_token']);
      })
      .catch(response => {
