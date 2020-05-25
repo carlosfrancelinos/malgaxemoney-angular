@@ -12,7 +12,7 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 export class LoginFormComponent {
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
     private errorHandler: ErrorHandlerService,
     private router: Router) { }
 
