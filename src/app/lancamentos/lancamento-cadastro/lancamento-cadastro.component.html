@@ -1,5 +1,5 @@
 <div class="container">
-  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+  <form autocomplete="off" (ngSubmit)="salvar()" [formGroup]="formulario">
 
     <div class="ui-g">
       <div class="ui-g-12">
@@ -7,57 +7,55 @@
       </div>
       <div class="ui-g-12">
         <p-selectButton name="tipo" [options]="tipos"
-        [(ngModel)]="lancamento.tipo" #tipo></p-selectButton>
+        formControlName="tipo"></p-selectButton>
       </div>
       <div class="ui-g-6 ui-md-3 ui-fluid">
         <label>Vencimento</label>
         <p-calendar dateFormat="dd/mm/yy" [inline]="false"
           [readonlyInput]="false" [showIcon]="false" name="vencimento"
-          [(ngModel)]="lancamento.dataVencimento"
-          #vencimento="ngModel" required></p-calendar>
-          <app-message [control]="vencimento" error="required"
+          formControlName="dataVencimento"></p-calendar>
+          <app-message [control]="formulario.get('dataVencimento')" error="required"
             text="Informe uma data de vencimento"></app-message>
       </div>
       <div class="ui-g-6 ui-md-3 ui-fluid">
-        <label>{{ tipo.value === 'RECEITA' ? 'Recebimento' : 'Pagamento' }}</label>
+        <label>{{ formulario.get('tipo').value === 'RECEITA' ? 'Recebimento' : 'Pagamento' }}</label>
         <p-calendar dateFormat="dd/mm/yy" name="dataPagamento"
-        [(ngModel)]="lancamento.dataPagamento"></p-calendar>
+        formControlName="dataPagamento"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-9 ui-fluid">
         <label>Descrição</label>
         <input pInputText type="text" name="descricao"
-        [(ngModel)]="lancamento.descricao"
-        #descricao="ngModel" required minlength="5">
-          <app-message [control]="descricao" error="required"
+        formControlName="descricao">
+          <app-message [control]="formulario.get('descricao')" error="obrigatoriedade"
             text="Informe uma descrição"></app-message>
-          <app-message [control]="descricao" error="minlength"
-            text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres."></app-message>
+          <app-message [control]="formulario.get('descricao')" error="tamanhoMinimo"
+            text="Mínimo de {{ formulario.get('descricao').errors?.tamanhoMinimo?.tamanho }} caracteres."></app-message>
       </div>
       <div class="ui-g-12 ui-md-3 ui-fluid">
         <label>Valor</label>
         <input pInputText type="text"  placeholder="0,00" name="valor" currencyMask
         [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-         name="valor" [(ngModel)]="lancamento.valor" #valor="ngModel" required>
+         name="valor" formControlName="valor">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-fluid">
+      <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="categoria">
         <label>Categoria</label>
         <p-dropdown [options]="categorias" placeholder="Selecione" name="categoria"
-        [(ngModel)]="lancamento.categoria.codigo" #categoria="ngModel" required></p-dropdown>
+        formControlName="codigo"></p-dropdown>
       </div>
-      <div class="ui-g-12 ui-md-6 ui-fluid">
+      <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="pessoa">
         <label>Pessoa</label>
         <p-dropdown [options]="pessoas" [filter]="true" placeholder="Selecione" name="pessoa"
-        [(ngModel)]="lancamento.pessoa.codigo" #pessoa="ngModel" required></p-dropdown>
+        formControlName="codigo"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>
         <textarea [rows]="5" pInputTextarea  name="observacao"
-        [(ngModel)]="lancamento.observacao" autoResize="autoResize"></textarea>
+        formControlName="observacao" autoResize="autoResize"></textarea>
       </div>
       <div class="ui-g-12">
-        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="submit" label="Salvar" [disabled]="formulario.invalid"></button>
         <button pButton type="button" label="Novo" class="ui-button-info"
-        (click) = "novo(f)" style="margin : 3px"></button>
+        (click) = "novo()" style="margin : 3px"></button>
         <a routerLink="/lancamentos">Voltar para a pesquisa</a>
       </div>
     </div>
