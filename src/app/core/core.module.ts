@@ -17,6 +17,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 import { AuthService } from '../seguranca/auth.service';
 import { LancamentoService } from './../lancamentos/lancamento.service';
 import { PessoaService } from './../pessoas/pessoa.service';
+import { DashboardService } from './../dashboard/dashboard.service';
+import { RelatoriosService } from './../relatorios/relatorios.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -35,6 +37,8 @@ registerLocaleData(localePt, 'pt-BR');
   ],
   providers: [
     PessoaService,
+    DashboardService,
+    RelatoriosService,
     LancamentoService,
     AuthService,
     ErrorHandlerService,
