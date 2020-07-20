@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastyService } from 'ng2-toasty';
 
-import { Pessoa } from 'src/app/core/model';
+import { Pessoa, Contato } from 'src/app/core/model';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 import { PessoaService } from './../pessoa.service';
@@ -18,6 +18,9 @@ import { PessoaService } from './../pessoa.service';
 export class PessoaCadastroComponent implements OnInit {
 
   pessoa = new Pessoa();
+  estados: any[];
+  cidades: any[];
+  estadoSelecionado: number;
 
   constructor(
     private pessoaService: PessoaService,
@@ -33,9 +36,23 @@ export class PessoaCadastroComponent implements OnInit {
 
     this.title.setTitle('Nova Pessoa');
 
+    this.carregarEstados();
+
     if (codigoPessoa) {
       this.carregarPessoas(codigoPessoa);
     }
+  }
+
+  carregarEstados() {
+    this.pessoaService.listarEstados().then(lista => {
+      this.estados = lista.map(uf => ({ label: uf.nome, value: uf.codigo}));
+    }).catch(erro => this.errorHandler.handle(erro));
+  }
+
+  carregarCidades() {
+    this.pessoaService.pesquisarCidades(this.estadoSelecionado).then(lista => {
+      this.cidades = lista.map(c => ({ label: c.nome, value: c.codigo}));
+    }).catch(erro => this.errorHandler.handle(erro));
   }
 
   novo(form: NgForm) {
@@ -82,6 +99,14 @@ export class PessoaCadastroComponent implements OnInit {
     this.pessoaService.buscarPorCodigo(codigo)
       .then( pessoa => {
         this.pessoa = pessoa;
+
+        this.estadoSelecionado = (this.pessoa.endereco.cidade) ?
+          this.pessoa.endereco.cidade.estado.codigo : null;
+
+        if(this.estadoSelecionado) {
+          this.carregarCidades();
+        }
+
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

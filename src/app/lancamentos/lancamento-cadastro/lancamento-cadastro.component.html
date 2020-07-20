@@ -47,15 +47,42 @@
         <p-dropdown [options]="pessoas" [filter]="true" placeholder="Selecione" name="pessoa"
         formControlName="codigo"></p-dropdown>
       </div>
+
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>
         <textarea [rows]="5" pInputTextarea  name="observacao"
         formControlName="observacao" autoResize="autoResize"></textarea>
       </div>
-      <div class="ui-g-12">
-        <button pButton type="submit" label="Salvar" [disabled]="formulario.invalid"></button>
+
+      <div class="ui-g-6 ui-g-offset-10 ui-md-2 ui-md-offset-10 ui-fluid"
+        *ngIf="!formulario.get('anexo').value">
+        <p-fileUpload name="anexo" mode="basic" auto="true" maxFileSize="100000000"
+          chooseLabel="Anexar" accept="image/*,application/*"
+          [url]="urlUploalAnexo"
+          (onBeforeSend)="antesUploadAnexo($event)"
+          (onUpload)="aoTerminarUploadAnexo($event)"
+          (onError)="erroUpload($event)"
+          [hidden]="uploadEmAndamento"></p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12" dir="rtl"
+        *ngIf="formulario.get('anexo').value">
+
+        <button pButton type="button" class="ui-button-danger"
+          icon="pi pi-times" pTooltip="Remover anexo" tooltipPosition="top"
+          (click)="removerAnexo()"></button>
+
+        <a target="_blank" pTooltip="Baixar anexo" tooltipPosition="top"
+          [href]="formulario.get('urlAnexo').value">{{ nomeAnexo }}</a>
+      </div>
+
+      <div class="ui-g-12 cadastro-acoes">
+        <button pButton type="submit" label="Salvar" [disabled]="formulario.invalid || uploadEmAndamento"></button>
         <button pButton type="button" label="Novo" class="ui-button-info"
-        (click) = "novo()" style="margin : 3px"></button>
+        (click) = "novo()"></button>
         <a routerLink="/lancamentos">Voltar para a pesquisa</a>
       </div>
     </div>

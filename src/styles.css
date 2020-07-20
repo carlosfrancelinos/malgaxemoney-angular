@@ -10,6 +10,10 @@ a {
   text-decoration: none;
 }
 
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
 label {
   font-weight: bold;
 }
@@ -41,7 +45,25 @@ label {
   text-align: center;
 }
 
+.col-acoes .ui-button {
+  margin: 1px;
+}
+
 .ui-dropdown-filter-container {
   width: 100%;
+}
+
+.label-spaced {
+  margin: 5px;
+}
+
+.cadastro-acoes .ui-button {
+  margin-right : 5px;
+}
+
+.relatorio-filtro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 

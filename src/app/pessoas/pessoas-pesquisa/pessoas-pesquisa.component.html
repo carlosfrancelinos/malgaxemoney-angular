@@ -33,15 +33,15 @@
             <ng-template pTemplate="body" let-pessoa>
               <tr>
                 <td>{{pessoa.nome}}</td>
-                <td>{{pessoa.endereco.cidade}}</td>
-                <td>{{pessoa.endereco.estado}}</td>
+                <td>{{pessoa.endereco.cidade?.nome}}</td>
+                <td>{{pessoa.endereco.cidade?.estado.nome}}</td>
                 <td><a href="javascript:;" [pTooltip]="pessoa.ativo ? 'Desativar' : 'Ativar'"
                   tooltipPosition="top" (click)="atualizar(pessoa)">
                     {{ pessoa.ativo ? 'Ativo' : 'Inativo'}}
                   </a>
                 </td>
                 <td class="col-acoes">
-                  <a pButton icon="pi pi-pencil" style="margin: 3px" pTooltip="Editar"
+                  <a pButton icon="pi pi-pencil" pTooltip="Editar"
                   tooltipPosition="top"
                   [routerLink]="['/pessoas', pessoa.codigo]"></a>
                   <button pButton icon="pi pi-trash"
